@@ -20,7 +20,7 @@
     import MainLayout from "./MainLayout";
     import {
         Users
-    } from "../scripts/users";
+    } from "./scripts/users";
 
     export default {
         created() {},

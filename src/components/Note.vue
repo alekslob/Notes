@@ -29,7 +29,7 @@
 <script>
     import {
         Note
-    } from "../scripts/notes";
+    } from "./scripts/notes";
     export default {
         props: ["listOfNotes", "userId", "noteId"],
         methods: {

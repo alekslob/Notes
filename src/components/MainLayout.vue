@@ -59,7 +59,7 @@
     import Note from "./Note";
     import {
         Notes
-    } from "../scripts/notes";
+    } from "./scripts/notes";
     export default {
         methods: {
             onUpdateSaveIcon(someDate) {
