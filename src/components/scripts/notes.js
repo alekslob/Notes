@@ -47,8 +47,19 @@ export class Notes {
         )
     }
 
-    createNewNote(note) {
-        this.allNotes.push(new Note(note));
+    createNewNote(title, content, date, ownerId) {
+        const id = Math.max.apply(null,
+            this.allNotes.map(
+                (item) => item.id
+            )
+        ) + 1;
+        this.allNotes.push(new Note({
+            id,
+            title,
+            content,
+            ownerId,
+            date
+        }));
     }
 
     getFavoriteNotes(title = "") {
