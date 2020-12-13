@@ -1,26 +1,36 @@
 <template>
-    <Page>
-        <!-- :actionBarHidden="onAction"> -->
+    <Page :actionBarHidden="onAction">
         <ActionBar>
-            <ActionItem @tap="onFavorit" v-show="true"
+            <!-- ActionItem @tap="onFavorit" v-show="true"
                 android.systemIcon="big_star_off" />
             <ActionItem @tap="onDelete" v-show="true"
-                android.systemIcon="ic_menu_send" />
-
-            <!--
-                <GridLayout columns="auto, *" row="auto">
+                android.systemIcon="ic_menu_send" /> -->
+            <GridLayout columns="auto, *" row="auto">
                 <Button col="0" row="0" :text="textbutton" @tap="onFavorit" />
-                <Button col="1" row="0" text="Удалить" @tap="onDelete" />
-                </GridLayout> -->
+                <Button col="1" row="0" text="редакт" @tap="onEdit" />
+                <Button col="2" row="0" text="Удалить" @tap="onDelete" />
+            </GridLayout>
         </ActionBar>
         <ScrollView>
             <StackLayout height="100%" class="home-panel">
                 <RadListView ref="listView" for="item in listOfNotes"
-                    @itemHold="onItemSelected" @itemTap="onItemTap">
+                    @itemHold="onItemHold" @itemTap="onItemSelected"
+                    separatorColor="red">
+                    <!-- v-bind:class="{itemTaped: selectedItems.includes(item.id)}" -->
                     <v-template>
-                        <StackLayout
-                            v-bind:class="{itemTaped: selectedItems.includes(item.id)}"
+                        <StackLayout backgroundColor="green"
                             class="note-block" orientation="vertical">
+                            <Label :text="item.title" class="titleLabel">
+                            </Label>
+                            <Label :text="item.content" class="contentLabel">
+                            </Label>
+                            <Label :text="item.date" class="dateLabel">
+                            </Label>
+                        </StackLayout>
+                    </v-template>
+                    <v-template if="selectedItems.includes(item.id)">
+                        <StackLayout backgroundColor="red" class="note-block"
+                            orientation="vertical">
                             <Label :text="item.title" class="titleLabel">
                             </Label>
                             <Label :text="item.content" class="contentLabel">
@@ -38,47 +48,53 @@
 <script>
     import Vue from "nativescript-vue";
     import RadListView from "nativescript-ui-listview/vue";
-    import Note from "./Note";
+    // import Note from "./Note";
 
     Vue.use(RadListView);
 
     export default {
         props: ["listOfNotes", "seen"],
         methods: {
-            onItemHold() {
-                this.onAction = false;
-                // this.backColorItem = "green";
-            },
+ 
             onFavorit() {
                 this.onAction = true;
+                // this.listOfNotes.getNote(this.itemSelected).switchFavorite();
+                this.$emit("switchFavorit", {
+                    noteId: this.itemSelected
+                });
+                this.itemSelected = -1;
                 // this.backColorItem = "green";
+            },
+            onEdit() {
+                this.onAction = true;
+                this.$emit("changeNote", {
+                    noteId: this.itemSelected
+                });
             },
             onDelete() {
                 this.onAction = true;
-                this.selectedItems = [];
+                // this.listOfNotes.deleteNote(this.itemSelected);
+                this.$emit("switchDelete", {
+                    noteId: this.itemSelected
+                });
+                this.itemSelected = -1;
+                // this.selectedItems = [];
                 // this.backColorItem = "green";
             },
-            onItemTap(item) {
-                this.seen = false;
-                this.textbutton = item;
-                this.selectedItems = [];
-                // this.onAction = false;
-            },
-            onItemSelected({
-                index,
-                object
-            }) {
+            onItemSelected(event) {
                 this.onAction = false;
-                const itemSelected = this.listOfNotes[index];
-                this.selectedItems.push(itemSelected);
+                this.textbutton = event.item.id;
+                this.itemSelected = event.item.id;
+                // this.selectedItems.push(itemSelected);
             }
         },
         data() {
             return {
                 onAction: true,
                 // backColorItem: "gray",
+                itemSelected: -1,
                 textbutton: "Отметить важным",
-                selectedItems: []
+                selectedItems: [2, 3]
             };
         }
     };
@@ -86,10 +102,10 @@
 
 <style>
     .itemTaped {
-        background-Color: green
+        backgroundColor: green
     }
 
     .itemNotTaped {
-        background-Color: gray
+        backgroundColor: gray
     }
 </style>

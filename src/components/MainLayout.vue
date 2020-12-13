@@ -15,7 +15,7 @@
             </GridLayout>
         </ActionBar>
         <GridLayout>
-            <BottomNavigation>
+            <BottomNavigation :selectedIndex="backIndex">
                 <TabStrip>
                     <TabStripItem @tap="onListTap">
                         <Label text="Все"></Label>
@@ -32,21 +32,26 @@
                     <Frame>
 
                         <List
-                            :listOfNotes="notesObject.getAllNotesForOwner(textFieldValue)" />
+                            :listOfNotes="notesObject.getAllNotesForOwner(textFieldValue)"
+                            @changeNote="onChangeNote"
+                            @switchFavorit="onFavorit"
+                            @switchDelete="onDelete" />
                     </Frame>
                 </TabContentItem>
                 <TabContentItem>
                     <Frame>
                         <List
-                            :listOfNotes="notesObject.getFavoriteNotes(textFieldValue)" />
+                            :listOfNotes="notesObject.getFavoriteNotes(textFieldValue)"
+                            @changeNote="onChangeNote"
+                            @switchFavorit="onFavorit"
+                            @switchDelete="onDelete" />
                     </Frame>
                 </TabContentItem>
 
                 <TabContentItem>
                     <Frame>
-                        <Note @updateSaveIcon="onUpdateSaveIcon"
-                            :listOfNotes="notesObject.getAllNotesForOwner(textFieldValue)"
-                            :userId="userId" />
+                        <Editor :note="sendNote" :userId="userId"
+                            @updateSaveIcon="onUpdateSaveIcon" />
                     </Frame>
                 </TabContentItem>
             </BottomNavigation>
@@ -56,14 +61,35 @@
 
 <script>
     import List from "./List";
-    import Note from "./Note";
+    import Editor from "./Editor";
     import {
-        Notes
+        Notes,
+        Note
     } from "./scripts/notes";
     export default {
         methods: {
-            onUpdateSaveIcon(someDate) {
-                // this.isEditingSave = someDate;
+            onFavorit(someData) {
+                this.notesObject.getNote(someData.noteId).switchFavorite();
+            },
+            onDelete(someData) {
+                this.notesObject.deleteNote(someData.noteId);
+            },
+            onChangeNote(someData) {
+                this.backIndex = 2;
+                this.noteId = someData.noteId;
+                this.sendNote = this.notesObject.getNote(this.noteId);
+                this.onCreateTap();
+            },
+            onUpdateSaveIcon(someData) {
+                this.backIndex = 0;
+                // if (this.noteId >= 0) {
+                //     this.notesObject.getNote(this.noteId).editNote(someData
+                //         .note);
+                // } else {
+                this.notesObject.createNewNote(someData.note);
+                // }
+                this.noteId = -1;
+                this.onListTap();
             },
             onCreateTap() {
                 this.seen = false;
@@ -82,16 +108,20 @@
                 this.onSearch = true;
             },
             backSearch() {
-                this.onActionTitle = true;
-                this.searchIcon = true;
-                this.onSearch = false;
+                if (this.onSearch) {
+                    this.onActionTitle = true;
+                    this.searchIcon = true;
+                    this.onSearch = false;
+                } else {
+                    this.$navigateBack();
+                }
             }
         },
         components: {
             List,
-            Note
+            Editor
         },
-        props: ["userId"],
+        props: ["userId", "backIndex"],
         data() {
             return {
                 seen: true,
@@ -100,7 +130,11 @@
                 onActionBar: false,
                 onTitle: true,
                 searchIcon: true,
-                onSearch: false
+                onSearch: false,
+                sendNote: new Note({
+                    title: "",
+                    comtent: ""
+                })
             };
         }
     };
