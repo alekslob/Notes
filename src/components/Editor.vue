@@ -18,7 +18,7 @@
             <TextView editable="true" height="60%" backgroundColor="gray"
                 v-model="textContent" margin="20" @focus="onFocus"
                 @blur="onBlur" @textChange="onChange"
-                @returnPress="backСhange" v-model="textContent"
+                @returnPress="backСhange"
                 hint="Enter content">
                 <!-- <FormattedString>
                     <Span :text="textContent" fontSize="20" />

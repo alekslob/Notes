@@ -102,10 +102,10 @@
 
 <style>
     .itemTaped {
-        backgroundColor: green
+        background-Color: green
     }
 
     .itemNotTaped {
-        backgroundColor: gray
+        background-Color: gray
     }
 </style>
