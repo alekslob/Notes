@@ -48,7 +48,7 @@ export class Notes {
     }
 
     createNewNote(note) {
-        const id = Math.max.apply(null,
+        note.id = Math.max.apply(null,
             this.allNotes.map(
                 (item) => item.id
             )
@@ -96,7 +96,7 @@ export class Notes {
     deleteNote(id) {
         var index = this.allNotes.findIndex(
             (item) => {
-                return item.id = id;
+                return item.id === id;
             }
         )
         this.allNotes.splice(index, 1);
