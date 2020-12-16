@@ -50,8 +50,9 @@
 
                 <TabContentItem>
                     <Frame>
-                        <Editor :note="sendNote" :userId="userId"
-                            @updateSaveIcon="onUpdateSaveIcon" />
+                        <Editor :note="sendNote"
+                            @updateSaveIcon="onUpdateSaveIcon"
+                            @backIcon="onBackFromEdit" />
                     </Frame>
                 </TabContentItem>
             </BottomNavigation>
@@ -67,6 +68,11 @@
         Note
     } from "./scripts/notes";
     export default {
+        components: {
+            List,
+            Editor
+        },
+        props: ["userId", "backIndex"],
         methods: {
             onFavorit(someData) {
                 this.notesObject.getNote(someData.noteId).switchFavorite();
@@ -75,20 +81,34 @@
                 this.notesObject.deleteNote(someData.noteId);
             },
             onChangeNote(someData) {
-                this.backIndex = 2;
                 this.noteId = someData.noteId;
-                this.sendNote = this.notesObject.getNote(this.noteId);
                 this.onCreateTap();
+                this.sendNote = new Note(this.notesObject.getNote(this.noteId));
+                this.backIndex = 2;
             },
             onUpdateSaveIcon(someData) {
                 this.backIndex = 0;
-                // if (this.noteId >= 0) {
-                //     this.notesObject.getNote(this.noteId).editNote(someData
-                //         .note);
-                // } else {
-                this.notesObject.createNewNote(someData.note);
-                // }
-                this.noteId = -1;
+                someData.note.ownerId = this.userId;
+                if (this.noteId > 0) {
+                    this.notesObject.getNote(this.noteId).editNote(someData
+                        .note);
+                } else {
+                    this.notesObject.createNewNote(someData.note);
+                }
+                this.sendNote = new Note({
+                    title: "",
+                    content: ""
+                });
+                this.noteId = 0;
+                this.onListTap();
+            },
+            onBackFromEdit() {
+                this.backIndex = 0;
+                this.sendNote = new Note({
+                    title: "",
+                    content: ""
+                });
+                this.noteId = 0;
                 this.onListTap();
             },
             onCreateTap() {
@@ -117,11 +137,6 @@
                 }
             }
         },
-        components: {
-            List,
-            Editor
-        },
-        props: ["userId", "backIndex"],
         data() {
             return {
                 seen: true,
