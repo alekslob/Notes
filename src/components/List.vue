@@ -6,7 +6,7 @@
             <ActionItem @tap="onDelete" v-show="true"
                 android.systemIcon="ic_menu_send" /> -->
             <GridLayout columns="auto, *" row="auto">
-                <Button col="0" row="0" :text="textbutton" @tap="onFavorit" />
+                <Button col="0" row="0" text="Важн" @tap="onFavorit" />
                 <Button col="1" row="0" text="редакт" @tap="onEdit" />
                 <Button col="2" row="0" text="Удалить" @tap="onDelete" />
             </GridLayout>
