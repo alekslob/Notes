@@ -38,6 +38,7 @@
                     } else {
                         this.$navigateTo(MainLayout, {
                             props: {
+                                backIndex: 1,
                                 userId: this.usersObject.createUser(
                                     this.login,
                                     this.password
@@ -54,6 +55,7 @@
                     if (userId) {
                         this.$navigateTo(MainLayout, {
                             props: {
+                                backIndex: 1,
                                 userId
                             }
                         });
