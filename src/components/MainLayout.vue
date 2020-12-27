@@ -1,15 +1,10 @@
 <template>
     <Page :actionBarHidden="onActionBar">
-        <ActionBar title="Мои заметки">
-            <!-- <Label v-if="onTitle" text="Мои заметки" /> -->
+        <ActionBar>
             <ActionItem @tap="onTapSearch" v-show="searchIcon"
                 android.systemIcon="ic_menu_search" />
-            <!-- <TextField v-if="onSearch" v-model="textFieldValue" hint="Search"
-                @returnPress="backSearch" /> -->
             <GridLayout columns="auto, *" rows="*">
-                <Label col="0" rows="0" text="Заметки" />
-                <!--<ActionItem col="1" rows="0" @tap="onTapSearch"
-                    v-show="searchIcon" android.systemIcon="ic_menu_search" /> -->
+                <Label col="0" rows="0" :text="actionTitle" />
                 <TextField col="1" rows="0" v-model="textFieldValue"
                     v-if="onSearch" hint="Search" @returnPress="backSearch" />
             </GridLayout>
@@ -35,7 +30,7 @@
                             :listOfNotes="notesObject.getAllNotesForOwner(textFieldValue)"
                             @changeNote="onChangeNote"
                             @switchFavorit="onFavorit"
-                            @switchDelete="onDelete" />
+                            @switchDelete="onDelete" @switchItem="onItem" />
                     </Frame>
                 </TabContentItem>
                 <TabContentItem>
@@ -44,7 +39,7 @@
                             :listOfNotes="notesObject.getFavoriteNotes(textFieldValue)"
                             @changeNote="onChangeNote"
                             @switchFavorit="onFavorit"
-                            @switchDelete="onDelete" />
+                            @switchDelete="onDelete" @switchItem="onItem" />
                     </Frame>
                 </TabContentItem>
 
@@ -74,16 +69,24 @@
         },
         props: ["userId", "backIndex"],
         methods: {
+            onItem(someData) {
+                this.actionTitle = someData.title;
+            },
             onFavorit(someData) {
+                this.actionTitle = "Moи заметки";
+
                 this.notesObject.getNote(someData.noteId).switchFavorite();
             },
             onDelete(someData) {
+                this.actionTitle = "Moи заметки";
                 this.notesObject.deleteNote(someData.noteId);
             },
             onChangeNote(someData) {
+                this.actionTitle = "Moи заметки";
                 this.noteId = someData.noteId;
                 this.onCreateTap();
-                this.sendNote = new Note(this.notesObject.getNote(this.noteId));
+                this.sendNote = new Note(this.notesObject.getNote(this
+                    .noteId));
                 this.backIndex = 2;
             },
             onUpdateSaveIcon(someData) {
@@ -139,6 +142,7 @@
         },
         data() {
             return {
+                actionTitle: "Мои заметки",
                 seen: true,
                 textFieldValue: "",
                 notesObject: new Notes(this.userId),

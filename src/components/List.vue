@@ -55,7 +55,6 @@
     export default {
         props: ["listOfNotes", "seen"],
         methods: {
- 
             onFavorit() {
                 this.onAction = true;
                 // this.listOfNotes.getNote(this.itemSelected).switchFavorite();
@@ -83,8 +82,11 @@
             },
             onItemSelected(event) {
                 this.onAction = false;
-                this.textbutton = event.item.id;
+                this.textbutton = event.item.title;
                 this.itemSelected = event.item.id;
+                this.$emit("switchItem", {
+                    title: this.textbutton
+                });
                 // this.selectedItems.push(itemSelected);
             }
         },
