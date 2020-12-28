@@ -1,5 +1,4 @@
 import Vue from 'nativescript-vue'
-// import App from './components/App.vue'
 import Login from './components/Login.vue'
 import VueDevtools from 'nativescript-vue-devtools'
 
@@ -10,7 +9,6 @@ import store from './store'
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = (TNS_ENV === 'production')
-
 
 new Vue({
   store,

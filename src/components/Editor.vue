@@ -1,6 +1,6 @@
 <template>
     <Page>
-        <ActionBar title="Мои заметки">
+        <ActionBar title="Мои заметки" color="#fff" backgroundColor="#009900">
             <ActionItem @tap="onTapSave" v-show="isEditingSave"
                 android.systemIcon="ic_menu_save" />
             <ActionItem @tap="onTapCancel" v-show="isEditingCancel"
@@ -17,7 +17,7 @@
                     <Span :text="note.title" fontSize="20" />
                 </FormattedString>
             </TextView>
-            <TextView editable="true" height="60%" backgroundColor="gray"
+            <TextView editable="true" height="60%" backgroundColor="#F0E68C"
                 v-model="textContent" margin="20" @focus="onFocus"
                 @blur="onBlur" @textChange="onChange"
                 @returnPress="backСhange"

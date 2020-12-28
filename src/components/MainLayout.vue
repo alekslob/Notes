@@ -1,26 +1,25 @@
 <template>
     <Page :actionBarHidden="onActionBar">
-        <ActionBar>
+        <ActionBar backgroundColor="#009900">
             <ActionItem @tap="onTapSearch" v-show="searchIcon"
                 android.systemIcon="ic_menu_search" />
             <GridLayout columns="auto, *" rows="*">
-                <Label col="0" rows="0" :text="actionTitle" />
-                <TextField col="1" rows="0" v-model="textFieldValue"
+                <Label class="text" col="0" rows="0" :text="actionTitle" />
+                <TextField  class="text" col="1" rows="0" v-model="textFieldValue"
                     v-if="onSearch" hint="Search" @returnPress="backSearch" />
             </GridLayout>
         </ActionBar>
-        <GridLayout>
+        <GridLayout backgroundColor="#009900">
             <BottomNavigation :selectedIndex="backIndex">
-                <TabStrip>
-                    <TabStripItem @tap="onListTap">
-                        <Label text="Все"></Label>
+                <TabStrip backgroundColor="#33cc66">
+                    <TabStripItem @tap="onListTap" font-weight: 700;>
+                        <Label   text="Все" fontSize="20"></Label>
                     </TabStripItem>
                     <TabStripItem @tap="onListTap">
-                        <Label text="Важное"></Label>
+                        <Label  text="Важное"fontSize="20"></Label>
                     </TabStripItem>
-
                     <TabStripItem @tap="onCreateTap">
-                        <Label text="Создание"></Label>
+                        <Label   text="Создание"fontSize="20"></Label>
                     </TabStripItem>
                 </TabStrip>
                 <TabContentItem>
@@ -160,4 +159,7 @@
 </script>
 
 <style>
+.text{
+    color:#fff;
+}
 </style>

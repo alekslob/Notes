@@ -1,17 +1,19 @@
 <template>
-    <Page actionBarHidden="true">
+    <Page actionBarHidden="true"class="Myform">
+    
         <GridLayout columns="*,*" rows="*,50,50,50,*"
-            backgroundColor="#3c495e">
-            <TextField row="1" col="0" colSpan="2" v-model="login"
-                hint="Имя пользователя" maxLength="20"
+            backgroundColor="#33cc66">
+            <TextField  class="text" row="1" col="0" colSpan="2" v-model="login"
+                hint="Имя пользователя"  maxLength="20"
                 @textChange="changeMessage" />
-            <TextField row="2" col="0" colSpan="2" v-model="password"
+            <TextField class="text" row="2" col="0" colSpan="2" v-model="password"
                 hint="Пароль" secure="true" maxLength="12"
                 @textChange="changeMessage" />
             <Button row="3" col="0" text="Войти" @tap="auth" />
             <Button row="3" col="1" text="Зарегестрироваться" @tap="signin" />
             <TextView row="4" col="0" editable="false" v-model="message" />
         </GridLayout>
+        
     </Page>
 </template>
 
@@ -77,4 +79,10 @@
 </script>
 
 <style>
+
+
+.text{
+    color:#000000;
+    font-size: 25px;
+}
 </style>

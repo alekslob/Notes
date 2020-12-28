@@ -1,24 +1,24 @@
 <template>
     <Page :actionBarHidden="onAction">
-        <ActionBar>
+        <ActionBar backgroundColor="#009900">
             <!-- ActionItem @tap="onFavorit" v-show="true"
                 android.systemIcon="big_star_off" />
             <ActionItem @tap="onDelete" v-show="true"
                 android.systemIcon="ic_menu_send" /> -->
-            <GridLayout columns="auto, *" row="auto">
-                <Button col="0" row="0" text="Важн" @tap="onFavorit" />
-                <Button col="1" row="0" text="редакт" @tap="onEdit" />
+            <GridLayout columns="auto, auto, *" row="auto" >
+                <Button col="0" row="0" text="Важное" @tap="onFavorit" />
+                <Button col="1" row="0" text="Редактировать" @tap="onEdit" />
                 <Button col="2" row="0" text="Удалить" @tap="onDelete" />
             </GridLayout>
         </ActionBar>
         <ScrollView>
-            <StackLayout height="100%" class="home-panel">
+            <StackLayout height="100%" backgroundColor="#FFF">
                 <RadListView ref="listView" for="item in listOfNotes"
                     @itemHold="onItemHold" @itemTap="onItemSelected"
                     separatorColor="red">
                     <!-- v-bind:class="{itemTaped: selectedItems.includes(item.id)}" -->
                     <v-template>
-                        <StackLayout backgroundColor="green"
+                        <StackLayout backgroundColor="#F0E68C"
                             class="note-block" orientation="vertical">
                             <Label :text="item.title" class="titleLabel">
                             </Label>
@@ -29,7 +29,7 @@
                         </StackLayout>
                     </v-template>
                     <v-template if="selectedItems.includes(item.id)">
-                        <StackLayout backgroundColor="red" class="note-block"
+                        <StackLayout backgroundColor="red" class="note-block-item"
                             orientation="vertical">
                             <Label :text="item.title" class="titleLabel">
                             </Label>
@@ -93,7 +93,7 @@
         data() {
             return {
                 onAction: true,
-                // backColorItem: "gray",
+                backColorItem: "gray",
                 itemSelected: -1,
                 textbutton: "Отметить важным",
                 selectedItems: [2, 3]
@@ -109,5 +109,23 @@
 
     .itemNotTaped {
         background-Color: gray
+    }
+    .titleLabel{
+        text-align: center;
+        font-weight: 700;
+        font-size: 20px; 
+    }
+    .contentLabel{
+        font-size: 20px; 
+        font-weight:italic;
+    }
+    .note-block{
+    border-style: solid; /* Белая рамка */
+    border-color: #FFF;
+    border-width: 10px;
+    border-radius: 30px; /* Радиус скругления */
+    }
+    .note-block-item{
+        Color: gray;
     }
 </style>
