@@ -6,8 +6,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@nativescript/camera": "^5.0.4",
     "@nativescript/core": "^7.0.3",
     "@vue/devtools": "^5.3.3",
+    "nativescript": "^7.1.2",
+    "nativescript-camera": "^4.5.0",
     "nativescript-socketio": "^3.3.1",
     "nativescript-toasty": "^3.0.0-alpha.2",
     "nativescript-ui-listview": "^9.0.4",

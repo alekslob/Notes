@@ -8,7 +8,8 @@ export class Note {
         this.isFavorite = note.isFavorite;
         this.isOpened = note.isOpened;
         this.ownerId = note.ownerId;
-        this.date = note.date
+        this.date = note.date;
+        this.img = note.img;
     }
 
     editNote(newData) {

@@ -7,6 +7,8 @@
                 android.systemIcon="ic_menu_close_clear_cancel" />
             <ActionItem @tap="onTapBack" v-show="!isEditingCancel"
                 android.systemIcon="ic_menu_back" />
+            <ActionItem @tap="takePicture" 
+                android.systemIcon="ic_menu_camera" />
         </ActionBar>
         <StackLayout height="100%">
             <TextView editable="true" height="50" @focus="onFocus"
@@ -17,7 +19,8 @@
                     <Span :text="note.title" fontSize="20" />
                 </FormattedString>
             </TextView>
-            <TextView editable="true" height="60%" backgroundColor="#F0E68C"
+            <Image src="note.img.src" width="250" height="250" />
+            <TextView editable="true" height="40%" backgroundColor="#F0E68C"
                 v-model="textContent" margin="20" @focus="onFocus"
                 @blur="onBlur" @textChange="onChange"
                 @returnPress="backСhange"
@@ -26,11 +29,17 @@
                     <Span :text="note.content" fontSize="20" />
                 </FormattedString>
             </TextView>
+            <!---эту кнопку можно убрать твоя норм работ-->
+            <!--<Button text="Take Picture" @tap="takePicture" />
+            <Button text="Choose Picture" @tap="selectPicture"/>-->
+            <!--эту кнопку можно убрать твоя норм работ-->
+			
         </StackLayout>
     </Page>
 </template>
 
 <script>
+    import * as camera from '@nativescript/camera';
     export default {
         props: ["note"],
         methods: {
@@ -52,6 +61,7 @@
             onTapSave() {
                 this.note.title = this.textTitle;
                 this.note.content = this.textContent;
+                // this.note.img = this.img;
                 this.note.date = new Date();
                 this.$emit("updateSaveIcon", {
                     note: this.note
@@ -59,12 +69,32 @@
             },
             onTapBack(){
                 this.$emit("backIcon");
+            },
+            takePicture() {
+                camera.requestCameraPermissions()
+                .then(() => {
+                    camera.takePicture({ width: 300, height: 300, keepAspectRatio: true, saveToGallery:true })
+                    .then(imageAsset => {
+                        let img = new Image();
+					    img.src = imageAsset;
+                        this.note.img = img;
+                    })
+                    .catch(e => {
+                        console.log('error:', e);
+                    });
+                })
+                .catch(e => {
+                    console.log('Error requesting permission');
+                });
             }
         },
+        
         data() {
             return {
                 isEditingSave: false,
-                isEditingCancel: false
+                isEditingCancel: false,
+                isEditingPicture: true,
+                img:''
             };
         }
     };
